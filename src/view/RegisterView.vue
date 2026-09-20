@@ -41,45 +41,46 @@ const handleRegister = async () => {
 </script>
 
 <template>
-  <div style="padding: 20px;">
-    <h2>Register</h2>
+  <div class="authPage">
+    <h2 class="authTitle">Register</h2>
 
     <form @submit.prevent="handleRegister">
       <div>
         <label for="name">Name:</label>
-        <input id="name" v-model="name" type="text" required />
+        <input id="name" v-model="name" type="text" required class="input" />
       </div>
 
-      <div style="margin-top: 10px;">
+      <div class="authStack">
         <label for="email">Email:</label>
-        <input id="email" v-model="email" type="email" required />
+        <input id="email" v-model="email" type="email" required class="input" />
       </div>
 
-      <div style="margin-top: 10px;">
+      <div class="authStack">
         <label for="password">Password:</label>
-        <input id="password" v-model="password" type="password" required />
+        <input id="password" v-model="password" type="password" required class="input" />
       </div>
 
-      <div style="margin-top: 10px;">
+      <div class="authStack">
         <label for="passwordConfirmation">Confirm Password:</label>
         <input
           id="passwordConfirmation"
           v-model="passwordConfirmation"
           type="password"
           required
+          class="input"
         />
       </div>
 
-      <button type="submit" style="margin-top: 10px;">Sign Up</button>
+      <button type="submit" class="btn" style="margin-top: 10px;">Sign Up</button>
     </form>
 
-    <p style="margin-top: 15px;">
+    <p class="authActions">
       Already have an account?
       <RouterLink to="/">Sign In</RouterLink>
     </p>
 
-    <p v-if="errorMessage" style="color: red; margin-top: 10px;">{{ errorMessage }}</p>
-    <p v-if="successMessage" style="color: green; margin-top: 10px;">{{ successMessage }}</p>
+    <p v-if="errorMessage" class="message error">{{ errorMessage }}</p>
+    <p v-if="successMessage" class="message success">{{ successMessage }}</p>
   </div>
 </template>
 

@@ -1,0 +1,89 @@
+---
+alwaysApply: true
+---
+# Cursor Guides (Budgeter 2026 Frontend)
+
+This file is a quick, project-specific reference for working in Cursor on `b-frontend`.
+
+## Workflow constraints (project preference)
+
+- Keep changes **minimal and localized** (avoid broad refactors unless explicitly requested).
+- Prefer editing **one file at a time** (finish/verify, then move on).
+
+## Run locally
+
+```bash
+npm install
+npm run dev
+```
+
+Vite runs on `http://localhost:5173/`.
+
+## API base URL (dev vs production)
+
+- **Dev (localhost)**: the frontend uses **same-origin** requests (no absolute base URL) and relies on the Vite dev proxy.
+- **Production (Netlify)**: the frontend uses `VITE_API_BASE_URL`.
+
+### Netlify env var
+
+Set this in Netlify **before build** (Vite reads env vars at build time):
+
+- `VITE_API_BASE_URL=https://dgloriaapi.co.uk`
+
+## Dev proxy (avoid CORS on localhost)
+
+In `vite.config.js`, we proxy API calls so the browser talks to `localhost:5173` and Vite forwards `/api/*` to your backend:
+
+- Frontend calls: `fetch('/api/...')`
+- Vite proxies to: `http://localhost:8081/api/...`
+
+If you change `vite.config.js`, **restart** `npm run dev`.
+
+## Auth model (Bearer token)
+
+Backend endpoints are token-based:
+
+- `POST /api/register` → returns `{ user, token }`
+- `POST /api/login` → returns `{ user, token }`
+- `GET /api/user` → requires `Authorization: Bearer <token>`
+- `POST /api/logout` → revokes the current token
+
+Frontend behavior:
+
+- Token is stored in `localStorage` under: `budgeter2026_auth_token`
+- All API requests automatically include:
+  - `Authorization: Bearer <token>` (when present)
+  - `Accept: application/json`
+
+Implementation:
+
+- `src/api/api.js`: token storage + automatic `Authorization` header
+- `src/view/LoginView.vue`: login + redirect
+- `src/view/RegisterView.vue`: register + redirect
+- `src/view/DashboardView.vue`: loads current user + logout
+
+## CORS (Netlify → API)
+
+If you see CORS errors on Netlify, it must be fixed on the **Laravel API** side:
+
+- Allow the Netlify site origin(s) in `config/cors.php`
+- Ensure `Authorization` header is allowed
+
+Example symptom:
+
+- API responds with `Access-Control-Allow-Origin: http://localhost:3000` but the request is coming from `https://<your-site>.netlify.app`.
+
+## Pages (routes)
+
+Defined in `src/router/index.js`:
+
+- `/` and `/login` → `LoginView`
+- `/register` → `RegisterView`
+- `/dashboard` → `DashboardView` (requires token)
+
+## Mock-budget dashboard (Phase 1 starter)
+
+The dashboard currently runs on locally persisted mock data (stored in `localStorage`) to support Phase 1 development before backend endpoints exist.
+
+Dashboard UI is in `src/view/DashboardView.vue`.
+

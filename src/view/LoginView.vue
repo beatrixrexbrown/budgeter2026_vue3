@@ -73,8 +73,8 @@ const handleLogout = async () => {
 </script>
 
 <template>
-  <div class="login-container" style="padding: 20px;">
-    <h2>Login</h2>
+  <div class="authPage">
+    <h2 class="authTitle">Login</h2>
 
     <form @submit.prevent="handleLogin">
       <div>
@@ -85,28 +85,31 @@ const handleLogout = async () => {
           type="email"
           required
           placeholder="email@example.com"
+          class="input"
         />
       </div>
 
-      <div style="margin-top: 10px;">
+      <div class="authStack">
         <label for="password">Password:</label>
-        <input id="password" v-model="password" type="password" required />
+        <input id="password" v-model="password" type="password" required class="input" />
       </div>
 
-      <button type="submit" style="margin-top: 10px;">Sign In</button>
+      <button type="submit" class="btn" style="margin-top: 10px;">Sign In</button>
     </form>
 
-    <p style="margin-top: 15px;">
+    <p class="authActions">
       Don't have an account?
       <RouterLink to="/register">Register</RouterLink>
     </p>
 
-    <p v-if="errorMessage" style="color: red; margin-top: 10px;">{{ errorMessage }}</p>
-    <p v-if="successMessage" style="color: green; margin-top: 10px;">{{ successMessage }}</p>
+    <p v-if="errorMessage" class="message error">{{ errorMessage }}</p>
+    <p v-if="successMessage" class="message success">{{ successMessage }}</p>
 
-    <div v-if="currentUser" style="color: green; margin-top: 10px;">
+    <div v-if="currentUser" class="message success">
       <p>Logged in as: {{ currentUser.name }} ({{ currentUser.email }})</p>
-      <button type="button" style="margin-top: 10px;" @click="handleLogout">Logout</button>
+      <button type="button" class="btn secondary" style="margin-top: 10px;" @click="handleLogout">
+        Logout
+      </button>
     </div>
   </div>
 </template>
