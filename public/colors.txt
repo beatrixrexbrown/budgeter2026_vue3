@@ -1,0 +1,9 @@
+light
+#08e2ff
+#f5ff8a
+#ffa88a
+
+dark
+#004d58
+#4f5231
+#604136
